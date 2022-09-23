@@ -2,7 +2,7 @@
 Spring, Angular and MongoDB Real Time Data
 </h1>
 <p>
-real time data modifications web app using reactive programming
+Real time data modifications web app using Server Send Events
 </p>
 <ul>
 <li>
