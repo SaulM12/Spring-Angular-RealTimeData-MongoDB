@@ -1,0 +1,45 @@
+<div class="flex surface-card p-3 mb-3 shadow-2">
+    <h1>Notificaciones</h1>
+    <button pButton pRipple type="button" label="Añadir" class="ml-3 p-button-raised" (click)="handleDialog()"></button>
+</div>
+<div class="grid grid-nogutter justify-content-between mt-2 notification_container">
+
+    <div class="sm:col-12 md:col-6 lg:col-4 flex flex-column align-items-start notification" *ngFor="let severity of getSeverities()">
+        <h2 class="ml-4">{{getSeveritiesText(severity)}}</h2>
+        <p-messages class="w-full px-4" severity="{{notification.severity.toLowerCase()}}"
+            *ngFor="let notification of notificationsMap.get(severity)">
+            <ng-template pTemplate>
+                <div class="flex justify-content-evenly align-items-center min-w-full">
+                    <span class="text-lg col-8">
+                        {{notification.message}}
+                    </span>
+                    <button *ngIf="severity==='INFO'" pButton pRipple type="button" icon="pi pi-bookmark"
+                        class="p-button-rounded col-2" (click)="updateNotification(notification,'WARN')"></button>
+                    <button *ngIf="severity==='WARN'" pButton pRipple type="button" icon="pi pi-check"
+                        class="p-button-rounded p-button-warning col-2"
+                        (click)="updateNotification(notification,'SUCCESS')"></button>
+                    <button *ngIf="severity==='SUCCESS'" pButton pRipple type="button" icon="pi pi-trash"
+                        class="p-button-rounded p-button-success col-2"
+                        (click)="deleteNotification(notification.id!)"></button>
+                    <button pButton pRipple type="button" icon="pi pi-pencil"
+                        class="p-button-rounded p-button-secondary p-button-text ml-1 col-2" (click)="editDialog(notification)"></button>
+                </div>
+            </ng-template>
+        </p-messages>
+    </div>
+
+</div>
+<p-dialog header="Notificación" [(visible)]="display" [style]="{width: '50vw'}">
+    <div>
+        <div class="field w-full">
+            <label for="message" class="block w-full">Mensaje</label>
+            <input id="message" type="text" class="w-full" aria-describedby="message" name="message" pInputText
+                [(ngModel)]="newNotification.message" />
+        </div>
+    </div>
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" iconPos="right" label="Guardar" 
+        (click)="edit?updateNotification(newNotification, newNotification.severity):createNotification(newNotification)"
+            styleClass="p-button-text"></p-button>
+    </ng-template>
+</p-dialog>
